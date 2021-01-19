@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:3.1-alpine
+FROM martinussuherman/alpine-tz-ep:dev-glibc
 
 ENV \
     # container/su-exec UID \
@@ -20,22 +20,27 @@ ENV \
     # container timezone \
     TZ=UTC 
 
-# Install shadow (for usermod and groupmod) and su-exec
 RUN apk --no-cache --update add \
-    shadow \
-    su-exec \
-    tzdata
+    ca-certificates \
+    \
+    # .NET Core dependencies
+    icu-libs \
+    krb5-libs \
+    libgcc \
+    libintl \
+    libssl1.1 \
+    libstdc++ \ 
+    lttng-ust \
+    numactl \
+    zlib
 
-COPY ../../create_user_group_home \
-     ../../chown_paths \
-     ../../entrypoint_su-exec \
-     ../../entrypoint_crond \
-     ../../entrypoint_exec \
-     /usr/bin/
+# Install ASP.NET Core
+ENV ASPNET_VERSION=3.1.11
 
-RUN chmod +x \
-    /usr/bin/create_user_group_home \
-    /usr/bin/chown_paths \
-    /usr/bin/entrypoint_su-exec \
-    /usr/bin/entrypoint_crond \
-    /usr/bin/entrypoint_exec
+RUN wget -O aspnetcore.tar.gz https://dotnetcli.azureedge.net/dotnet/aspnetcore/Runtime/$ASPNET_VERSION/aspnetcore-runtime-$ASPNET_VERSION-linux-musl-x64.tar.gz \
+    && aspnetcore_sha512='dfe6c191cbd87cf926a85da59095171df13c8bef8a5a8b7089c986475c4f3c508c66302ec008bee9ef458c2b2a5f9c348371139a2cddc3d9e0d74e879bc0f31a' \
+    && echo "$aspnetcore_sha512  aspnetcore.tar.gz" | sha512sum -c - \
+    && mkdir -p /usr/share/dotnet \
+    && tar -oxzf aspnetcore.tar.gz -C /usr/share/dotnet \
+    && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet \
+    && rm aspnetcore.tar.gz
