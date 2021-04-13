@@ -1,4 +1,4 @@
-FROM martinussuherman/alpine-tz-ep:dev-glibc
+FROM martinussuherman/alpine:3.13-amd64-glibc
 
 ENV \
     # container/su-exec UID \
@@ -35,10 +35,10 @@ RUN apk --no-cache --update add \
     zlib
 
 # Install ASP.NET Core
-ENV ASPNET_VERSION=3.1.11
+ENV ASPNET_VERSION=3.1.13
 
 RUN wget -O aspnetcore.tar.gz https://dotnetcli.azureedge.net/dotnet/aspnetcore/Runtime/$ASPNET_VERSION/aspnetcore-runtime-$ASPNET_VERSION-linux-musl-x64.tar.gz \
-    && aspnetcore_sha512='dfe6c191cbd87cf926a85da59095171df13c8bef8a5a8b7089c986475c4f3c508c66302ec008bee9ef458c2b2a5f9c348371139a2cddc3d9e0d74e879bc0f31a' \
+    && aspnetcore_sha512='418b18bfd3a5e03ba0129720eef361fae6ba001263a0ec72b4cc018b8a6b90c8215df1ffae26c429e5a594c4425275996454666e6e0f2d66efffa6c844ee1a1a' \
     && echo "$aspnetcore_sha512  aspnetcore.tar.gz" | sha512sum -c - \
     && mkdir -p /usr/share/dotnet \
     && tar -oxzf aspnetcore.tar.gz -C /usr/share/dotnet \
