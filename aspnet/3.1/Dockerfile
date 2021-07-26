@@ -36,11 +36,11 @@ RUN \
    zlib
 
 # Install ASP.NET Core
-ENV ASPNET_VERSION=3.1.13
+ENV ASPNET_VERSION=3.1.17
 
 RUN \
    wget -O aspnetcore.tar.gz https://dotnetcli.azureedge.net/dotnet/aspnetcore/Runtime/$ASPNET_VERSION/aspnetcore-runtime-$ASPNET_VERSION-linux-musl-x64.tar.gz \
-   && aspnetcore_sha512='418b18bfd3a5e03ba0129720eef361fae6ba001263a0ec72b4cc018b8a6b90c8215df1ffae26c429e5a594c4425275996454666e6e0f2d66efffa6c844ee1a1a' \
+   && aspnetcore_sha512='8861552d21a7efed982f31d228d42da7f8de8cb5343771de96034b3ddcabca2f9bc96bdadc40c7732c217bbc1b4d68999e91a98541076d6b5f535c2e6c9f8a4f' \
    && echo "$aspnetcore_sha512  aspnetcore.tar.gz" | sha512sum -c - \
    && mkdir -p /usr/share/dotnet \
    && tar -oxzf aspnetcore.tar.gz -C /usr/share/dotnet \
