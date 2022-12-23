@@ -58,3 +58,12 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: martinussuherman/alpine-dotnet:5.0-gdiplus
+
+      - name: Build and push aspnet 6.0 image
+        uses: docker/build-push-action@v2
+        with:
+          file: ./aspnet/6.0/Dockerfile
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: martinussuherman/alpine-dotnet:6.0
